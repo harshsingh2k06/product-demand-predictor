@@ -1,0 +1,18 @@
+# Generated files - regenerate these by running generate_data.py and train_model.py
+supermarket.db
+demand_model.pkl
+product_encoder.pkl
+model_features.pkl
+demand_history.csv
+static/actual_vs_predicted.png
+static/feature_importance.png
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# OS / editor junk
+.DS_Store
+.vscode/

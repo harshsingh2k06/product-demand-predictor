@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Product Catalog</h2>
+
+<div class="table-responsive">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Base Price (₹)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in products %}
+        <tr>
+            <td>{{ p['product_id'] }}</td>
+            <td>{{ p['name'] }}</td>
+            <td><span class="badge bg-secondary">{{ p['category'] }}</span></td>
+            <td>{{ p['base_price'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

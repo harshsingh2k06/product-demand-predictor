@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - SuperMart Demand System{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h3>{{ stats.total_products }}</h3>
+                <p class="text-muted mb-0">Total Products</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h3>{{ stats.total_categories }}</h3>
+                <p class="text-muted mb-0">Categories</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h3>{{ stats.total_history_rows }}</h3>
+                <p class="text-muted mb-0">Historical Records</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h3>{{ stats.total_sales_logged }}</h3>
+                <p class="text-muted mb-0">Live Sales Logged</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Overall Monthly Demand Trend (all products)</h5>
+                <canvas id="demandChart" height="110"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Top 5 Products by Demand</h5>
+                <ol class="mb-0">
+                    {% for p in top_products %}
+                    <li>{{ p['name'] }} — {{ p['total_units'] }} units</li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('predict') }}" class="btn btn-primary">Predict Demand →</a>
+    <a href="{{ url_for('record_sale') }}" class="btn btn-outline-secondary">Record a Sale →</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    const ctx = document.getElementById('demandChart');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ chart_labels | tojson }},
+            datasets: [{
+                label: 'Total Units Sold',
+                data: {{ chart_values | tojson }},
+                borderColor: '#0d6efd',
+                backgroundColor: 'rgba(13,110,253,0.1)',
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: { x: { ticks: { maxRotation: 90, minRotation: 90 } } }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Sales History{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Live Sales History</h2>
+
+{% if sales|length == 0 %}
+<p class="text-muted">No sales recorded yet. Go to "Record Sale" to add one.</p>
+{% else %}
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Price (₹)</th>
+            <th>Quantity</th>
+            <th>Note</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in sales %}
+        <tr>
+            <td>{{ s['id'] }}</td>
+            <td>{{ s['name'] }}</td>
+            <td>{{ s['category'] }}</td>
+            <td>{{ s['sale_date'] }}</td>
+            <td>{{ s['price'] }}</td>
+            <td>{{ s['quantity'] }}</td>
+            <td>{{ s['note'] }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('delete_sale', sale_id=s['id']) }}"
+                      onsubmit="return confirm('Delete this entry?');">
+                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endif %}
+{% endblock %}
